@@ -1,17 +1,25 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Chair Detector
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content class="bx--body p20" padding>
+  <div class="p20">
+    Handtrack.js allows you prototype handtracking interactions in the browser in 10 lines of code.
+  </div>
+  <div class="mb10">
+    <button (click)="toggleVideo()" id="trackbutton" class="bx--btn bx--btn--secondary" type="button">
+      Toggle Video
+    </button>
+    <div id="updatenote" class="updatenote mt10"> {{updateNote}}</div>
+  </div>
+  <video class="videobox canvasbox" autoplay="autoplay" id="myvideo"></video>
 
-  <button ion-button (click)=takePhoto()>Take Photo</button>
-  <p align="center"><img src="{{myphoto}}"></p>
+  <canvas id="canvas" class="border canvasbox"></canvas>
+  <script src="https://unpkg.com/carbon-components@latest/scripts/carbon-components.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script>
+  <script src="track.js"></script>
 </ion-content>
