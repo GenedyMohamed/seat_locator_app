@@ -10,6 +10,7 @@ import { Camera } from '@ionic-native/camera';
 import { CameraPreview } from '@ionic-native/camera-preview';
 
 
+
 @NgModule({
   declarations: [
     MyApp,

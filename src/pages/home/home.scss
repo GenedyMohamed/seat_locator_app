@@ -1,35 +1,42 @@
 page-home {
-    body {
-        padding: 20px;
-    }
+  body {
+    padding: 20px;
+}
 
-    .p20 {
-        padding: 20px;
-    }
+.p20 {
+    padding: 20px;
+}
 
-    .canvasbox {
-        border-radius: 3px;
-        margin-right: 10px;
-        width: 450px;
-        height: 338px;
-        border-bottom: 3px solid #0063FF;
-        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
-      background: #333;
+.canvasbox {
+    border-radius: 3px;
+    margin-right: 10px;
+    width: 450px;
+    height: 338px;
+    border-bottom: 3px solid #0063FF;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
+  background: #333;
 
-    }
+}
 
-    .mb10 {
-        margin-bottom: 10px
-    }
+.mb10 {
+    margin-bottom: 10px
+}
 
-    .mt10 {
-        margin-top: 10px
-    }
+.mt10 {
+    margin-top: 10px
+}
 
-    .updatenote {
-        padding: 10px;
-        background: rgb(245, 147, 20);
-        color: white;
-        display: inline;
+.updatenote {
+    padding: 10px;
+    background: rgb(245, 147, 20);
+    color: white;
+    display: inline;
+}
+    ion-app, ion-header, ion-content {
+      background-color: transparent !important;
     }
+    // ion-header, ion-content {
+    //   --background: transparent;
+    //   --ion-color-base: transparent !important;
+    // }
 }

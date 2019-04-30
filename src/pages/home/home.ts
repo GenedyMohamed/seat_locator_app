@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions, CameraPreviewDimensions } from '@ionic-native/camera-preview';
+import * as handTrack from 'handtrackjs';
 
 @Component({
   selector: 'page-home',
@@ -11,10 +12,12 @@ export class HomePage {
   myphoto: any;
   click: any;
   video = document.getElementById("myvideo");
-  canvas = document.getElementById("canvas");
+  canvas = <HTMLCanvasElement> document.getElementById("mycanvas");
+  //context = this.canvas.getContext("2d");
   // context = this.canvas.getContext("2d");
-  trackButton = document.getElementById("trackbutton");
-  updateNote = 'loading model ..';
+  trackButton = <HTMLInputElement>document.getElementById("trackbutton");
+
+  updateNote: any;
 
   isVideo = false;
   model = null;
@@ -29,7 +32,9 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private camera: Camera, private cameraPreview: CameraPreview) {
     this.click = 0;
+
   }
+
   // startVideo(){
   //   const options: CameraOptions = {
   //     quality: 100,
@@ -48,44 +53,63 @@ export class HomePage {
   // }
 
   startVideo() {
-    const cameraPreviewOpts: CameraPreviewOptions = {
-      x: 0,
-      y: 0,
-      width: window.screen.width,
-      height: window.screen.height,
-      camera: 'rear',
-      tapPhoto: true,
-      previewDrag: true,
-      toBack: true,
-      alpha: 1
-    };
-    // start camera
-    this.cameraPreview.startCamera(cameraPreviewOpts).then(
-      (res) => {
-        console.log(res)
-      },
-      (err) => {
-        console.log(err)
-      });
+    handTrack.startVideo(this.video).then(function (status) {
+      console.log("video started", status);
+      if (status) {
+          this.updateNote = "Video started. Now tracking"
+          this.isVideo = true
+          this.runDetection()
+      } else {
+          this.updateNote = "Please enable video"
+      }
+  });
+  // Load the model.
+handTrack.load(this.modelParams).then(lmodel => {
+  // detect objects in the image.
+  this.model = lmodel
+  this.updateNote = "Loaded Model!"
+  this.trackButton.disabled = false
+  });
   }
-  toggleVideo() {
+    // const cameraPreviewOpts: CameraPreviewOptions = {
+    //   x: 0,
+    //   y: 0,
+    //   width: window.screen.width,
+    //   height: window.screen.height,
+    //   camera: 'rear',
+    //   tapPhoto: false,
+    //   previewDrag: false,
+    //   toBack: false,
+    //   alpha: 1
+    // };
+    // // start camera
+    // this.cameraPreview.startCamera(cameraPreviewOpts).then(
+    //   (res) => {
+    //     console.log(res)
+    //   },
+    //   (err) => {
+    //     console.log(err)
+    //   });
+   toggleVideo() {
     if (!this.isVideo) {
       this.updateNote = "Starting video"
       this.startVideo();
     } else {
       this.updateNote = "Stopping video"
-      // this.handTrack.stopVideo(this.video)
-      this.isVideo = false;
-      this.updateNote = "Video stopped"
+        handTrack.stopVideo(this.video)
+        this.isVideo = false;
+        this.updateNote = "Video stopped"
     }
-  }
-  runDetection() {
-    this.model.detect(this.video).then(predictions => {
+}
+
+ runDetection() {
+  this.model.detect(this.video).then(predictions => {
       console.log("Predictions: ", predictions);
-      // this.model.renderPredictions(predictions, this.canvas, this.context, this.video);
+      this.model.renderPredictions(predictions, this.canvas, this.video);
       if (this.isVideo) {
-        requestAnimationFrame(this.runDetection);
+          requestAnimationFrame(this.runDetection);
       }
-    });
-  }
+  });
+}
+
 }
